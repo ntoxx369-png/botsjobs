@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="BotJobs - Botswana's Job Portal. Find jobs in Gaborone, Francistown and across Botswana.">
+    <meta name="description" content="BotsJobs - Botswana's Job Portal. Find jobs in Gaborone, Francistown and across Botswana.">
     <meta name="theme-color" content="#1a56db">
-    <title>{% block title %}BotJobs - Jobs in Botswana{% endblock %}</title>
+    <title>{% block title %}BotsJobs - Jobs in Botswana{% endblock %}</title>
     <link rel="manifest" href="/static/manifest.json">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
@@ -18,7 +18,7 @@
     <nav class="bg-white shadow-md sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4">
             <div class="flex justify-between items-center h-16">
-                <a href="{% url 'home' %}" class="text-2xl font-bold text-blue-600">BotJobs</a>
+                <a href="{% url 'home' %}" class="text-2xl font-bold text-blue-600">BotsJobs</a>
                 <div class="hidden md:flex items-center space-x-6">
                     <a href="{% url 'job_list' %}" class="text-gray-600 hover:text-blue-600">Browse Jobs</a>
                     {% if user.is_authenticated %}
@@ -80,7 +80,7 @@
         <div class="max-w-7xl mx-auto px-4 py-8">
             <div class="grid md:grid-cols-3 gap-8">
                 <div>
-                    <h3 class="text-xl font-bold mb-4">BotJobs</h3>
+                    <h3 class="text-xl font-bold mb-4">BotsJobs</h3>
                     <p class="text-gray-400">Botswana's leading job portal connecting talent with opportunity across the nation.</p>
                 </div>
                 <div>
@@ -102,7 +102,7 @@
                 </div>
             </div>
             <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
-                <p>&copy; {% now "Y" %} BotJobs. All rights reserved.</p>
+                <p>&copy; {% now "Y" %} BotsJobs. All rights reserved.</p>
             </div>
         </div>
     </footer>
