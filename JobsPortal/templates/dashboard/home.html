@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard - BotJobs{% endblock %}
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 py-8">
+    <div class="flex justify-between items-center mb-8">
+        <h1 class="text-3xl font-bold text-gray-800">Employer Dashboard</h1>
+        <a href="{% url 'create_job' %}" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">+ Post New Job</a>
+    </div>
+    <div class="grid md:grid-cols-4 gap-6 mb-8">
+        <div class="bg-white rounded-xl shadow-sm p-6">
+            <p class="text-gray-500 text-sm">Total Jobs</p>
+            <p class="text-3xl font-bold text-gray-800">{{ total_jobs }}</p>
+        </div>
+        <div class="bg-white rounded-xl shadow-sm p-6">
+            <p class="text-gray-500 text-sm">Active Jobs</p>
+            <p class="text-3xl font-bold text-green-600">{{ active_jobs }}</p>
+        </div>
+        <div class="bg-white rounded-xl shadow-sm p-6">
+            <p class="text-gray-500 text-sm">Total Views</p>
+            <p class="text-3xl font-bold text-blue-600">{{ total_views }}</p>
+        </div>
+        <div class="bg-white rounded-xl shadow-sm p-6">
+            <p class="text-gray-500 text-sm">Applications</p>
+            <p class="text-3xl font-bold text-purple-600">{{ total_applications }}</p>
+        </div>
+    </div>
+    <div class="bg-white rounded-xl shadow-sm p-6">
+        <h2 class="font-bold text-lg text-gray-800 mb-4">Recent Applications</h2>
+        {% if recent_applications %}
+        <div class="overflow-x-auto">
+            <table class="w-full text-left">
+                <thead>
+                    <tr class="border-b text-gray-500 text-sm">
+                        <th class="py-3">Applicant</th>
+                        <th class="py-3">Job</th>
+                        <th class="py-3">Applied</th>
+                        <th class="py-3">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for app in recent_applications %}
+                    <tr class="border-b">
+                        <td class="py-3">
+                            <p class="font-medium text-gray-800">{{ app.full_name }}</p>
+                            <p class="text-sm text-gray-500">{{ app.email }}</p>
+                        </td>
+                        <td class="py-3"><a href="{% url 'job_detail' app.job.id %}" class="text-blue-600 hover:underline">{{ app.job.title }}</a></td>
+                        <td class="py-3 text-gray-500 text-sm">{{ app.applied_at|timesince }} ago</td>
+                        <td class="py-3"><a href="{{ app.resume.url }}" class="text-blue-600 hover:underline" target="_blank">View Resume</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p class="text-gray-500">No applications yet. Keep posting jobs to attract candidates!</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

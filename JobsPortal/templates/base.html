@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="BotJobs - Botswana's Job Portal. Find jobs in Gaborone, Francistown and across Botswana.">
+    <meta name="theme-color" content="#1a56db">
+    <title>{% block title %}BotJobs - Jobs in Botswana{% endblock %}</title>
+    <link rel="manifest" href="/static/manifest.json">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', system-ui, sans-serif; }
+        .job-card:hover { transform: translateY(-2px); }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+<body class="bg-gray-50 min-h-screen flex flex-col">
+    <nav class="bg-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <a href="{% url 'home' %}" class="text-2xl font-bold text-blue-600">BotJobs</a>
+                <div class="hidden md:flex items-center space-x-6">
+                    <a href="{% url 'job_list' %}" class="text-gray-600 hover:text-blue-600">Browse Jobs</a>
+                    {% if user.is_authenticated %}
+                        {% if user.employer_profile %}
+                            <a href="{% url 'dashboard_home' %}" class="text-gray-600 hover:text-blue-600">Dashboard</a>
+                        {% endif %}
+                        <a href="{% url 'profile' %}" class="text-gray-600 hover:text-blue-600">Profile</a>
+                        <form method="POST" action="{% url 'logout' %}" class="inline">
+                            {% csrf_token %}
+                            <button type="submit" class="text-gray-600 hover:text-blue-600">Logout</button>
+                        </form>
+                    {% else %}
+                        <a href="{% url 'login' %}" class="text-gray-600 hover:text-blue-600">Login</a>
+                        <a href="{% url 'register' %}" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">Get Started</a>
+                    {% endif %}
+                </div>
+                <button id="mobile-menu-btn" class="md:hidden text-gray-600">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
+            <div class="px-4 py-3 space-y-3">
+                <a href="{% url 'job_list' %}" class="block text-gray-600 hover:text-blue-600">Browse Jobs</a>
+                {% if user.is_authenticated %}
+                    {% if user.employer_profile %}
+                        <a href="{% url 'dashboard_home' %}" class="block text-gray-600 hover:text-blue-600">Dashboard</a>
+                    {% endif %}
+                    <a href="{% url 'profile' %}" class="block text-gray-600 hover:text-blue-600">Profile</a>
+                    <form method="POST" action="{% url 'logout' %}">
+                        {% csrf_token %}
+                        <button type="submit" class="text-gray-600 hover:text-blue-600">Logout</button>
+                    </form>
+                {% else %}
+                    <a href="{% url 'login' %}" class="block text-gray-600 hover:text-blue-600">Login</a>
+                    <a href="{% url 'register' %}" class="block text-blue-600 hover:text-blue-700">Get Started</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    {% if messages %}
+        <div class="max-w-7xl mx-auto px-4 mt-4">
+            {% for message in messages %}
+                <div class="p-4 rounded-lg mb-2 {% if message.tags == 'error' %}bg-red-100 text-red-700{% elif message.tags == 'success' %}bg-green-100 text-green-700{% else %}bg-blue-100 text-blue-700{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <main class="flex-grow">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="bg-gray-800 text-white mt-12">
+        <div class="max-w-7xl mx-auto px-4 py-8">
+            <div class="grid md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">BotJobs</h3>
+                    <p class="text-gray-400">Botswana's leading job portal connecting talent with opportunity across the nation.</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Quick Links</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="{% url 'job_list' %}" class="hover:text-white">Browse Jobs</a></li>
+                        <li><a href="{% url 'register' %}" class="hover:text-white">Create Account</a></li>
+                        <li><a href="{% url 'employer_register' %}" class="hover:text-white">Post a Job</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Locations</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="{% url 'job_list' %}?location=gaborone" class="hover:text-white">Gaborone</a></li>
+                        <li><a href="{% url 'job_list' %}?location=francistown" class="hover:text-white">Francistown</a></li>
+                        <li><a href="{% url 'job_list' %}?location=maun" class="hover:text-white">Maun</a></li>
+                        <li><a href="{% url 'job_list' %}?location=remote" class="hover:text-white">Remote Jobs</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; {% now "Y" %} BotJobs. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('mobile-menu-btn')?.addEventListener('click', () => {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/static/sw.js').catch(() => {});
+            });
+        }
+    </script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

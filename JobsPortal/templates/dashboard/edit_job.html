@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% block title %}Edit Job - BotJobs{% endblock %}
+{% block content %}
+<div class="max-w-3xl mx-auto px-4 py-8">
+    <div class="bg-white rounded-xl shadow-sm p-8">
+        <h1 class="text-2xl font-bold text-gray-800 mb-6">Edit Job</h1>
+        <form method="POST" class="space-y-6">
+            {% csrf_token %}
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Job Title *</label>
+                <input type="text" name="title" value="{{ job.title }}" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300">
+            </div>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Location *</label>
+                    <select name="location" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300">
+                        {% for loc in locations %}
+                        <option value="{{ loc.0 }}" {% if job.location == loc.0 %}selected{% endif %}>{{ loc.1 }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Job Type *</label>
+                    <select name="job_type" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300">
+                        {% for jt in job_types %}
+                        <option value="{{ jt.0 }}" {% if job.job_type == jt.0 %}selected{% endif %}>{{ jt.1 }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Industry *</label>
+                <select name="industry" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300">
+                    {% for ind in industries %}
+                    <option value="{{ ind.0 }}" {% if job.industry == ind.0 %}selected{% endif %}>{{ ind.1 }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Minimum Salary (BWP)</label>
+                    <input type="number" name="salary_min" value="{{ job.salary_min|default:'' }}" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Maximum Salary (BWP)</label>
+                    <input type="number" name="salary_max" value="{{ job.salary_max|default:'' }}" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300">
+                </div>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Application Deadline *</label>
+                <input type="date" name="deadline" value="{{ job.deadline|date:'Y-m-d' }}" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300">
+            </div>
+            <div>
+                <label class="flex items-center">
+                    <input type="checkbox" name="is_active" {% if job.is_active %}checked{% endif %} class="mr-2">
+                    <span class="text-sm font-medium text-gray-700">Job is Active</span>
+                </label>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Job Description *</label>
+                <textarea name="description" required rows="6" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300">{{ job.description }}</textarea>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Requirements *</label>
+                <textarea name="requirements" required rows="6" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300">{{ job.requirements }}</textarea>
+            </div>
+            <div class="flex gap-4">
+                <button type="submit" class="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700">Save Changes</button>
+                <a href="{% url 'manage_jobs' %}" class="px-8 py-3 border border-gray-300 rounded-lg font-semibold hover:bg-gray-50">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

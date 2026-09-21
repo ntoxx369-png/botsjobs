@@ -1,0 +1,37 @@
+﻿:root { --primary: #1a56db; --primary-dark: #1e40af; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Inter', system-ui, sans-serif; background: #f9fafb; color: #111827; }
+a { color: var(--primary); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.container { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
+.btn { display: inline-block; padding: 0.625rem 1.25rem; border-radius: 0.5rem; font-weight: 500; transition: all 0.2s; cursor: pointer; border: none; }
+.btn-primary { background: var(--primary); color: white; }
+.btn-primary:hover { background: var(--primary-dark); text-decoration: none; }
+.btn-outline { border: 1px solid #d1d5db; background: white; }
+.btn-outline:hover { background: #f3f4f6; }
+.card { background: white; border-radius: 0.75rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 1.5rem; }
+.form-group { margin-bottom: 1rem; }
+.form-group label { display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 0.25rem; }
+.form-group input, .form-group select, .form-group textarea { width: 100%; padding: 0.5rem 0.75rem; border: 1px solid #d1d5db; border-radius: 0.5rem; font-size: 1rem; }
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(26,86,219,0.1); }
+.job-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
+.job-card { background: white; border-radius: 0.75rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 1.5rem; transition: transform 0.2s, box-shadow 0.2s; border: 1px solid #f3f4f6; }
+.job-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+.badge { display: inline-block; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 500; }
+.badge-blue { background: #dbeafe; color: #1e40af; }
+.badge-green { background: #dcfce7; color: #166534; }
+.badge-gray { background: #f3f4f6; color: #4b5563; }
+.badge-purple { background: #f3e8ff; color: #6b21a8; }
+nav { background: white; box-shadow: 0 1px 3px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 50; }
+nav .container { display: flex; justify-content: space-between; align-items: center; height: 4rem; }
+nav .nav-links { display: flex; align-items: center; gap: 1.5rem; }
+nav a { color: #4b5563; font-weight: 500; }
+nav a:hover { color: var(--primary); text-decoration: none; }
+footer { background: #1f2937; color: white; padding: 2rem 0; margin-top: 3rem; }
+footer a { color: #9ca3af; }
+footer a:hover { color: white; }
+@media (max-width: 768px) {
+  .job-grid { grid-template-columns: 1fr; }
+  nav .desktop-only { display: none; }
+  .mobile-menu { display: block; }
+}
