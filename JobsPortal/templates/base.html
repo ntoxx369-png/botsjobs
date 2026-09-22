@@ -22,6 +22,7 @@
                 <div class="hidden md:flex items-center space-x-6">
                     <a href="{% url 'job_list' %}" class="text-gray-600 hover:text-blue-600">Browse Jobs</a>
                     <a href="{% url 'gig_list' %}" class="text-gray-600 hover:text-blue-600">Gigs</a>
+                    <a href="{% url 'post_job' %}" class="text-gray-600 hover:text-blue-600">Post a Job</a>
                     {% if user.is_authenticated %}
                         {% if user.employer_profile %}
                             <a href="{% url 'dashboard_home' %}" class="text-gray-600 hover:text-blue-600">Dashboard</a>
@@ -48,6 +49,7 @@
             <div class="px-4 py-3 space-y-3">
                 <a href="{% url 'job_list' %}" class="block text-gray-600 hover:text-blue-600">Browse Jobs</a>
                 <a href="{% url 'gig_list' %}" class="block text-gray-600 hover:text-blue-600">Gigs</a>
+                <a href="{% url 'post_job' %}" class="block text-gray-600 hover:text-blue-600">Post a Job</a>
                 {% if user.is_authenticated %}
                     {% if user.employer_profile %}
                         <a href="{% url 'dashboard_home' %}" class="block text-gray-600 hover:text-blue-600">Dashboard</a>
@@ -92,8 +94,8 @@
                     <ul class="space-y-2 text-gray-400">
                         <li><a href="{% url 'job_list' %}" class="hover:text-white">Browse Jobs</a></li>
                         <li><a href="{% url 'gig_list' %}" class="hover:text-white">Browse Gigs</a></li>
+                        <li><a href="{% url 'post_job' %}" class="hover:text-white">Post a Job (Free)</a></li>
                         <li><a href="{% url 'register' %}" class="hover:text-white">Create Account</a></li>
-                        <li><a href="{% url 'employer_register' %}" class="hover:text-white">Post a Job</a></li>
                     </ul>
                 </div>
                 <div>

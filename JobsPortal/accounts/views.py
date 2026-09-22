@@ -140,16 +140,25 @@ def employer_register(request):
             messages.error(request, 'Passwords do not match.')
             return redirect('employer_register')
 
+        if len(password) < 8:
+            messages.error(request, 'Password must be at least 8 characters.')
+            return redirect('employer_register')
+
         if User.objects.filter(username=username).exists():
             messages.error(request, 'Username already exists.')
             return redirect('employer_register')
 
+        if User.objects.filter(email=email).exists():
+            messages.error(request, 'Email already registered.')
+            return redirect('employer_register')
+
         user = User.objects.create_user(username=username, email=email, password=password)
-        Employer.objects.create(user=user, company_name=company_name)
+        Employer.objects.create(user=user, company_name=company_name or username)
 
         user = authenticate(request, username=username, password=password)
         if user:
             login(request, user)
-            return redirect('dashboard')
+            messages.success(request, f'Welcome! Your account is ready — post your first job now.')
+            return redirect('create_job')
 
     return render(request, 'accounts/employer_register.html')

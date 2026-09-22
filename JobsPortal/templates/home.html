@@ -14,6 +14,10 @@
                     <button type="submit" class="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-blue-50 transition">Search Jobs</button>
                 </div>
             </form>
+            <div class="mt-6 flex flex-col md:flex-row justify-center gap-4">
+                <a href="{% url 'post_job' %}" class="bg-yellow-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-yellow-600 transition">Employers: Post a Job — Free</a>
+                <a href="{% url 'gig_list' %}" class="border border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition">Find a Gig</a>
+            </div>
         </div>
     </div>
 </section>

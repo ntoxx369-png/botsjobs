@@ -17,9 +17,15 @@ def home(request):
     })
 
 
+def post_job(request):
+    locations = Job._meta.get_field('location').choices
+    return render(request, 'post_job.html', {'locations': locations})
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home, name='home'),
+    path('post-job/', post_job, name='post_job'),
     path('jobs/', include('jobs.urls')),
     path('accounts/', include('accounts.urls')),
     path('dashboard/', include('dashboard.urls')),

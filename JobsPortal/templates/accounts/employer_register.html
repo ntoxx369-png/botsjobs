@@ -1,34 +1,55 @@
 {% extends 'base.html' %}
-{% block title %}Employer Registration - BotsJobs{% endblock %}
+{% block title %}Create Employer Account - Free | BotsJobs{% endblock %}
 {% block content %}
-<div class="max-w-md mx-auto px-4 py-12">
+<div class="max-w-2xl mx-auto px-4 py-12">
+    <div class="text-center mb-8">
+        <h1 class="text-3xl font-bold text-gray-800">Create Your Employer Account</h1>
+        <p class="text-gray-600 mt-2">Post jobs for free and start receiving applications today.</p>
+    </div>
     <div class="bg-white rounded-xl shadow-sm p-8">
-        <h1 class="text-2xl font-bold text-gray-800 mb-6 text-center">Register as Employer</h1>
-        <form method="POST" class="space-y-6">
+        <div class="grid md:grid-cols-3 gap-4 mb-8 text-center text-sm">
+            <div class="bg-green-50 p-3 rounded-lg">
+                <div class="font-bold text-green-700">100% Free</div>
+                <div class="text-gray-600">No hidden fees</div>
+            </div>
+            <div class="bg-blue-50 p-3 rounded-lg">
+                <div class="font-bold text-blue-700">2 Minutes</div>
+                <div class="text-gray-600">Quick setup</div>
+            </div>
+            <div class="bg-purple-50 p-3 rounded-lg">
+                <div class="font-bold text-purple-700">Direct</div>
+                <div class="text-gray-600">Applicants in your inbox</div>
+            </div>
+        </div>
+        <form method="POST" class="space-y-5">
             {% csrf_token %}
             <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Username</label>
-                <input type="text" name="username" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300">
+                <label class="block text-sm font-medium text-gray-700 mb-1">Company Name *</label>
+                <input type="text" name="company_name" required placeholder="e.g. Botswana Tech Solutions" class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300">
             </div>
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                <input type="email" name="email" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300">
+            <div class="grid md:grid-cols-2 gap-5">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Username *</label>
+                    <input type="text" name="username" required class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Work Email *</label>
+                    <input type="email" name="email" required placeholder="you@company.co.bw" class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300">
+                </div>
             </div>
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Company Name</label>
-                <input type="text" name="company_name" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300">
+            <div class="grid md:grid-cols-2 gap-5">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Password *</label>
+                    <input type="password" name="password" required minlength="8" class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Confirm Password *</label>
+                    <input type="password" name="confirm_password" required minlength="8" class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300">
+                </div>
             </div>
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
-                <input type="password" name="password" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300">
-            </div>
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
-                <input type="password" name="confirm_password" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300">
-            </div>
-            <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700">Register</button>
+            <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 text-lg">Create Account & Post Jobs</button>
         </form>
-        <p class="text-center text-gray-600 mt-6">Already have an account? <a href="{% url 'login' %}" class="text-blue-600 hover:underline">Login</a></p>
+        <p class="text-center text-gray-600 mt-6">Looking for work instead? <a href="{% url 'register' %}" class="text-blue-600 hover:underline">Create a job seeker account</a></p>
     </div>
 </div>
 {% endblock %}
