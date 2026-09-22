@@ -7,6 +7,20 @@
         <p class="text-xl text-blue-100 mb-8">Post your job on BotsJobs and reach thousands of job seekers across Gaborone, Francistown, Maun and beyond — <strong class="text-white">100% free</strong>.</p>
         <a href="{% url 'employer_register' %}" class="bg-white text-blue-600 px-8 py-4 rounded-lg font-bold text-lg hover:bg-blue-50 transition inline-block">Post a Job — Free</a>
         <p class="text-blue-200 text-sm mt-4">No credit card required. Job live in 2 minutes.</p>
+        <div class="mt-8 flex justify-center gap-8 md:gap-12 text-center">
+            <div>
+                <div class="text-3xl font-bold">{{ stats.jobs_count }}</div>
+                <div class="text-blue-200 text-sm">Jobs Posted</div>
+            </div>
+            <div>
+                <div class="text-3xl font-bold">{{ stats.gigs_count }}</div>
+                <div class="text-blue-200 text-sm">Open Gigs</div>
+            </div>
+            <div>
+                <div class="text-3xl font-bold">{{ stats.employers_count }}</div>
+                <div class="text-blue-200 text-sm">Employers</div>
+            </div>
+        </div>
     </div>
 </section>
 
