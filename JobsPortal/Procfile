@@ -1,1 +1,1 @@
-web: gunicorn bot.wsgi:application --log-file - --access-logfile - --error-logfile -
+web: sh -c "python manage.py migrate --noinput && python manage.py seed_data && gunicorn bot.wsgi:application --log-file - --access-logfile - --error-logfile -"
