@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %}{{ gig.title }} - BotsJobs{% endblock %}
+{% block content %}
+<div class="max-w-4xl mx-auto px-4 py-8">
+    <div class="bg-white rounded-xl shadow-sm p-8">
+        <div class="flex justify-between items-start mb-6">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-800">{{ gig.title }}</h1>
+                <span class="inline-block mt-2 bg-purple-100 text-purple-700 text-sm px-3 py-1 rounded-full">{{ gig.get_category_display }}</span>
+            </div>
+            <div class="text-right">
+                <p class="text-gray-500 text-sm">{{ gig.views }} view{{ gig.views|pluralize:"s" }}</p>
+                <p class="text-gray-500 text-sm">Posted by {{ gig.poster.username }}</p>
+            </div>
+        </div>
+        <div class="flex flex-wrap gap-4 mb-8 text-sm">
+            <span class="bg-gray-100 px-4 py-2 rounded-lg">{{ gig.get_location_display }}</span>
+            {% if gig.budget_min and gig.budget_max %}
+            <span class="bg-green-100 text-green-700 px-4 py-2 rounded-lg">{{ gig.budget_currency }} {{ gig.budget_min|floatformat:0 }} - {{ gig.budget_max|floatformat:0 }}</span>
+            {% endif %}
+            <span class="bg-yellow-100 text-yellow-700 px-4 py-2 rounded-lg">Deadline: {{ gig.deadline }}</span>
+        </div>
+        <div class="prose max-w-none">
+            <h2 class="text-xl font-bold text-gray-800 mb-4">Description</h2>
+            <p class="text-gray-600 whitespace-pre-line">{{ gig.description }}</p>
+        </div>
+        <div class="mt-8 pt-6 border-t flex justify-between items-center">
+            <div>
+                <p class="text-gray-500">Applications: {{ gig.application_count }}</p>
+                <p class="text-gray-500">{{ gig.deadline|timeuntil }} left to apply</p>
+            </div>
+            {% if gig.status == 'open' %}
+            <a href="{% url 'apply_gig' gig.id %}" class="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition">Apply to Gig</a>
+            {% else %}
+            <span class="bg-gray-200 text-gray-600 px-8 py-3 rounded-lg font-semibold">Closed</span>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

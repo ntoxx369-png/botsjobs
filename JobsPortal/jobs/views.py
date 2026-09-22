@@ -4,11 +4,12 @@ from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 from django.conf import settings
-from .models import Job, Employer, Applicant
+from django.contrib import messages
+from .models import Job, Employer, Applicant, Gig, GigApplication
 
 
 def job_list(request):
-    jobs = Job.objects.filter(is_active=True).order_by('-created_at')
+    jobs = Job.objects.filter(is_active=True).order_by('-is_featured', '-created_at')
 
     query = request.GET.get('q')
     location = request.GET.get('location')
@@ -104,3 +105,80 @@ def apply_job(request, job_id):
 
     context = {'job': job}
     return render(request, 'jobs/apply.html', context)
+
+
+def gig_list(request):
+    gigs = Gig.objects.filter(status='open').order_by('-is_featured', '-created_at')
+
+    query = request.GET.get('q')
+    location = request.GET.get('location')
+    category = request.GET.get('category')
+
+    if query:
+        gigs = gigs.filter(
+            Q(title__icontains=query) |
+            Q(description__icontains=query)
+        )
+
+    if location:
+        gigs = gigs.filter(location=location)
+
+    if category:
+        gigs = gigs.filter(category=category)
+
+    paginator = Paginator(gigs, 20)
+    page = request.GET.get('page')
+    gigs = paginator.get_page(page)
+
+    locations = Gig._meta.get_field('location').choices
+    categories = Gig._meta.get_field('category').choices
+
+    context = {
+        'gigs': gigs,
+        'locations': locations,
+        'categories': categories,
+    }
+    return render(request, 'jobs/gig_list.html', context)
+
+
+def gig_detail(request, gig_id):
+    gig = get_object_or_404(Gig, id=gig_id, status='open')
+    gig.views += 1
+    gig.save()
+
+    context = {'gig': gig}
+    return render(request, 'jobs/gig_detail.html', context)
+
+
+@login_required
+def apply_gig(request, gig_id):
+    gig = get_object_or_404(Gig, id=gig_id, status='open')
+
+    if request.method == 'POST':
+        full_name = request.POST.get('full_name')
+        email = request.POST.get('email')
+        phone = request.POST.get('phone')
+        message = request.POST.get('message')
+        quote_amount = request.POST.get('quote_amount') or None
+
+        GigApplication.objects.create(
+            gig=gig,
+            full_name=full_name,
+            email=email,
+            phone=phone,
+            message=message,
+            quote_amount=quote_amount,
+        )
+
+        send_mail(
+            subject=f'Gig Application: {gig.title}',
+            message=f'{full_name} has applied for your gig "{gig.title}".\n\nMessage: {message}\nQuote: {quote_amount or "Not specified"}\nPhone: {phone}\nEmail: {email}',
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[gig.poster.email],
+            fail_silently=True,
+        )
+
+        return render(request, 'jobs/gig_apply_success.html', {'gig': gig})
+
+    context = {'gig': gig}
+    return render(request, 'jobs/gig_apply.html', context)

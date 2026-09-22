@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block title %}Gig Applications - BotsJobs{% endblock %}
+{% block content %}
+<div class="max-w-6xl mx-auto px-4 py-8">
+    <div class="flex justify-between items-center mb-8">
+        <div>
+            <h1 class="text-3xl font-bold text-gray-800">Applications for "{{ gig.title }}"</h1>
+            <p class="text-gray-500 mt-1">{{ applications.count }} applicant{{ applications.count|pluralize:"s" }}</p>
+        </div>
+        <a href="{% url 'manage_gigs' %}" class="text-blue-600 hover:underline">Back to Gigs</a>
+    </div>
+    <div class="bg-white rounded-xl shadow-sm">
+        {% if applications %}
+        <div class="overflow-x-auto">
+            <table class="w-full text-left">
+                <thead>
+                    <tr class="border-b text-gray-500 text-sm">
+                        <th class="py-4 px-6">Name</th>
+                        <th class="py-4 px-6">Email</th>
+                        <th class="py-4 px-6">Phone</th>
+                        <th class="py-4 px-6">Quote</th>
+                        <th class="py-4 px-6">Message</th>
+                        <th class="py-4 px-6">Applied</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for app in applications %}
+                    <tr class="border-b hover:bg-gray-50">
+                        <td class="py-4 px-6 font-medium text-gray-800">{{ app.full_name }}</td>
+                        <td class="py-4 px-6"><a href="mailto:{{ app.email }}" class="text-blue-600 hover:underline">{{ app.email }}</a></td>
+                        <td class="py-4 px-6 text-gray-600">{{ app.phone }}</td>
+                        <td class="py-4 px-6">
+                            {% if app.quote_amount %}{{ gig.budget_currency }} {{ app.quote_amount|floatformat:0 }}{% else %}Not specified{% endif %}
+                        </td>
+                        <td class="py-4 px-6 text-gray-600 max-w-xs truncate">{{ app.message|truncatewords:15 }}</td>
+                        <td class="py-4 px-6 text-gray-500 text-sm">{{ app.applied_at|date:"M d, Y" }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="p-12 text-center">
+            <p class="text-gray-500 text-lg">No applications yet.</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

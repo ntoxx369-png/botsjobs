@@ -73,6 +73,7 @@ class Job(models.Model):
     salary_currency = models.CharField(max_length=3, default='BWP')
     deadline = models.DateField()
     is_active = models.BooleanField(default=True)
+    is_featured = models.BooleanField(default=False)
     views = models.PositiveIntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -101,6 +102,101 @@ class Applicant(models.Model):
         verbose_name = 'Applicant'
         verbose_name_plural = 'Applicants'
         ordering = ['-applied_at']
+
+
+class Gig(models.Model):
+    GIG_CATEGORIES = [
+        ('delivery', 'Delivery & Transport'),
+        ('tutoring', 'Tutoring & Education'),
+        ('events', 'Events & Catering'),
+        ('trades', 'Plumbing, Electrical & Trades'),
+        ('cleaning', 'Cleaning & Maintenance'),
+        ('it', 'IT & Digital'),
+        ('creative', 'Design, Photo & Video'),
+        ('agriculture', 'Farming & Agriculture'),
+        ('retail', 'Retail & Sales'),
+        ('other', 'Other'),
+    ]
+
+    STATUS_CHOICES = [
+        ('open', 'Open'),
+        ('in_progress', 'In Progress'),
+        ('completed', 'Completed'),
+        ('cancelled', 'Cancelled'),
+    ]
+
+    poster = models.ForeignKey(User, on_delete=models.CASCADE, related_name='gigs_posted')
+    title = models.CharField(max_length=255)
+    category = models.CharField(max_length=50, choices=GIG_CATEGORIES, default='other')
+    description = models.TextField()
+    location = models.CharField(max_length=50, choices=Job.LOCATION_CHOICES, default='gaborone')
+    budget_min = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
+    budget_max = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
+    budget_currency = models.CharField(max_length=3, default='BWP')
+    deadline = models.DateField()
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='open')
+    is_featured = models.BooleanField(default=False)
+    views = models.PositiveIntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.title} (Gig)"
+
+    @property
+    def application_count(self):
+        return self.gig_applications.count()
+
+    class Meta:
+        ordering = ['-created_at']
+
+
+class GigApplication(models.Model):
+    gig = models.ForeignKey(Gig, on_delete=models.CASCADE, related_name='gig_applications')
+    full_name = models.CharField(max_length=255)
+    email = models.EmailField()
+    phone = models.CharField(max_length=20)
+    message = models.TextField()
+    quote_amount = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
+    applied_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.full_name} - {self.gig.title}"
+
+    class Meta:
+        ordering = ['-applied_at']
+
+
+class Payment(models.Model):
+    PURPOSE_CHOICES = [
+        ('featured_job', 'Featured Job Post'),
+        ('featured_gig', 'Featured Gig Post'),
+        ('subscription', 'Employer Subscription'),
+        ('resume_spotlight', 'Resume Spotlight'),
+    ]
+
+    STATUS_CHOICES = [
+        ('pending', 'Pending'),
+        ('completed', 'Completed'),
+        ('failed', 'Failed'),
+        ('refunded', 'Refunded'),
+    ]
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='payments')
+    purpose = models.CharField(max_length=30, choices=PURPOSE_CHOICES)
+    amount = models.DecimalField(max_digits=12, decimal_places=2)
+    currency = models.CharField(max_length=3, default='BWP')
+    method = models.CharField(max_length=50, blank=True, help_text='e.g. MyZaka, Orange Money')
+    reference = models.CharField(max_length=100, blank=True)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.get_purpose_display()} - {self.get_status_display()}"
+
+    class Meta:
+        ordering = ['-created_at']
 
 
 class Resume(models.Model):

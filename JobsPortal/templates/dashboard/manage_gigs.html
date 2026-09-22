@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block title %}Manage Gigs - BotsJobs{% endblock %}
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 py-8">
+    <div class="flex justify-between items-center mb-8">
+        <h1 class="text-3xl font-bold text-gray-800">Manage Gigs</h1>
+        <a href="{% url 'create_gig' %}" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">+ Post New Gig</a>
+    </div>
+    <div class="bg-white rounded-xl shadow-sm">
+        {% if gigs %}
+        <div class="overflow-x-auto">
+            <table class="w-full text-left">
+                <thead>
+                    <tr class="border-b text-gray-500 text-sm">
+                        <th class="py-4 px-6">Gig Title</th>
+                        <th class="py-4 px-6">Category</th>
+                        <th class="py-4 px-6">Location</th>
+                        <th class="py-4 px-6">Budget</th>
+                        <th class="py-4 px-6">Status</th>
+                        <th class="py-4 px-6">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for gig in gigs %}
+                    <tr class="border-b hover:bg-gray-50">
+                        <td class="py-4 px-6">
+                            <a href="{% url 'gig_detail' gig.id %}" class="font-medium text-gray-800 hover:text-blue-600">{{ gig.title }}</a>
+                            <p class="text-sm text-gray-500">{{ gig.application_count }} applicants</p>
+                        </td>
+                        <td class="py-4 px-6 text-gray-600">{{ gig.get_category_display }}</td>
+                        <td class="py-4 px-6 text-gray-600">{{ gig.get_location_display }}</td>
+                        <td class="py-4 px-6">
+                            {% if gig.budget_min and gig.budget_max %}
+                            {{ gig.budget_currency }} {{ gig.budget_min|floatformat:0 }} - {{ gig.budget_max|floatformat:0 }}
+                            {% else %}Negotiable{% endif %}
+                        </td>
+                        <td class="py-4 px-6">
+                            <span class="px-3 py-1 rounded-full text-sm {% if gig.status == 'open' %}bg-green-100 text-green-700{% else %}bg-gray-200 text-gray-600{% endif %}">
+                                {{ gig.get_status_display }}
+                            </span>
+                        </td>
+                        <td class="py-4 px-6">
+                            <a href="{% url 'view_gig_applications' gig.id %}" class="text-blue-600 hover:underline mr-3">Applications</a>
+                            <a href="{% url 'edit_gig' gig.id %}" class="text-blue-600 hover:underline mr-3">Edit</a>
+                            <a href="{% url 'delete_gig' gig.id %}" class="text-red-600 hover:underline" onclick="return confirm('Are you sure?')">Delete</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="p-12 text-center">
+            <p class="text-gray-500 text-lg mb-4">No gigs posted yet.</p>
+            <a href="{% url 'create_gig' %}" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">Post Your First Gig</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

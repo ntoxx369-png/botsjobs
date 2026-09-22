@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Feature Job - BotsJobs{% endblock %}
+{% block content %}
+<div class="max-w-2xl mx-auto px-4 py-8">
+    <div class="bg-white rounded-xl shadow-sm p-8">
+        <h1 class="text-2xl font-bold text-gray-800 mb-6">Feature "{{ job.title }}"</h1>
+        <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-6 mb-6">
+            <h3 class="font-bold text-yellow-800 mb-2">Featured Job Benefits:</h3>
+            <ul class="text-yellow-700 space-y-1 text-sm">
+                <li>&#10003; Appears at the top of all job listings</li>
+                <li>&#10003; Highlighted with a "Featured" badge</li>
+                <li>&#10003; Priority in search results</li>
+                <li>&#10003; 30 days of boosted visibility</li>
+            </ul>
+        </div>
+        <div class="border rounded-lg p-6 mb-6">
+            <div class="flex justify-between items-center">
+                <span class="text-lg font-semibold">Total</span>
+                <span class="text-2xl font-bold text-blue-600">BWP 150</span>
+            </div>
+            <p class="text-sm text-gray-500 mt-1">Payment via MyZaka / Orange Money (coming soon)</p>
+        </div>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="flex gap-4">
+                <button type="submit" class="flex-1 bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700">Feature This Job (Pay Later)</button>
+                <a href="{% url 'featured_jobs' %}" class="px-6 py-3 border border-gray-300 rounded-lg font-semibold hover:bg-gray-50">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
